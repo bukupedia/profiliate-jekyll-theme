@@ -9,7 +9,7 @@ logo_text: "Profiliate"
 
 # Footer configuration
 footer_text: "Profit from Affiliate"
-footer_company: "Profiliate"  # Optional company name
+# footer_company: "Profiliate"  # Optional company name
 # footer_year: 2025  # Optional - uncomment to use fixed year instead of dynamic current year
 
 permalink: pretty
