@@ -1,0 +1,126 @@
+---
+layout: default
+title: Beranda
+---
+
+<section class="hero">
+  <div class="container">
+    <h1>Katalog Produk</h1>
+    <p>Temukan produk terbaik dengan harga terjangkau</p>
+  </div>
+</section>
+
+<section id="products" class="products-section">
+  <div class="container">
+    <h2>Daftar Produk</h2>
+    
+    <div class="category-filter">
+      <button class="filter-btn active" data-category="all">Semua</button>
+      {% assign categories = site.products | map: "category" | uniq %}
+      {% for category in categories %}
+      <button class="filter-btn" data-category="{{ category }}">{{ category }}</button>
+      {% endfor %}
+    </div>
+    
+    <div id="products-grid" class="products-grid">
+      {% for product in site.products %}
+      <article class="product-card" data-category="{{ product.category }}">
+        <img src="{{ product.image_url }}" alt="{{ product.title }}" class="product-card-image">
+        <div class="product-card-content">
+          <span class="product-category">{{ product.category }}</span>
+          <h3 class="product-card-title">{{ product.title }}</h3>
+          <p class="product-card-price">{{ product.price }}</p>
+          <a href="{{ site.baseurl }}{{ product.url }}" class="btn btn-secondary">Lihat Produk</a>
+        </div>
+      </article>
+      {% endfor %}
+    </div>
+    
+    <div class="pagination" id="pagination">
+      <button id="prev-btn" class="btn btn-secondary">← Sebelumnya</button>
+      <span class="page-info" id="page-info">Halaman 1 dari 2</span>
+      <button id="next-btn" class="btn btn-secondary">Selanjutnya →</button>
+    </div>
+  </div>
+</section>
+
+<script>
+(function() {
+  const filterBtns = document.querySelectorAll('.filter-btn');
+  const cards = document.querySelectorAll('.product-card');
+  const perPage = 10;
+  let currentPage = 1;
+  let activeCategory = 'all';
+  
+  function getFilteredCards() {
+    if (activeCategory === 'all') return cards;
+    return Array.from(cards).filter(card => card.dataset.category === activeCategory);
+  }
+  
+  function getTotalPages(filteredCards) {
+    return Math.ceil(filteredCards.length / perPage);
+  }
+  
+  function showPage(page) {
+    const filteredCards = getFilteredCards();
+    const totalPages = getTotalPages(filteredCards);
+    
+    cards.forEach(card => {
+      const cardIndex = Array.from(filteredCards).indexOf(card);
+      if (cardIndex === -1) {
+        card.style.display = 'none';
+        return;
+      }
+      const cardPage = Math.floor(cardIndex / perPage) + 1;
+      card.style.display = cardPage === page ? '' : 'none';
+    });
+    
+    document.getElementById('page-info').textContent = 'Halaman ' + page + ' dari ' + totalPages;
+    document.getElementById('prev-btn').disabled = page <= 1;
+    document.getElementById('next-btn').disabled = page >= totalPages;
+  }
+  
+  function filterByCategory(category) {
+    activeCategory = category;
+    currentPage = 1;
+    const filteredCards = getFilteredCards();
+    const totalPages = getTotalPages(filteredCards);
+    
+    if (totalPages <= 1) {
+      document.getElementById('pagination').style.display = 'none';
+    } else {
+      document.getElementById('pagination').style.display = '';
+    }
+    
+    showPage(currentPage);
+  }
+  
+  // Filter button click handlers
+  filterBtns.forEach(btn => {
+    btn.addEventListener('click', function() {
+      filterBtns.forEach(b => b.classList.remove('active'));
+      this.classList.add('active');
+      filterByCategory(this.dataset.category);
+    });
+  });
+  
+  const filteredCards = getFilteredCards();
+  const totalPages = getTotalPages(filteredCards);
+  
+  if (totalPages <= 1) {
+    document.getElementById('pagination').style.display = 'none';
+  }
+  
+  showPage(currentPage);
+  
+  document.getElementById('prev-btn').addEventListener('click', function() {
+    if (currentPage > 1) { currentPage--; showPage(currentPage); }
+  });
+  
+  document.getElementById('next-btn').addEventListener('click', function() {
+    const filteredCards = getFilteredCards();
+    const totalPages = getTotalPages(filteredCards);
+    if (currentPage < totalPages) { currentPage++; showPage(currentPage); }
+  });
+})();
+</script>

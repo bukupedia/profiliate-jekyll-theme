@@ -1,0 +1,25 @@
+title: Katalog Produk Affiliate
+description: Katalog produk affiliate terbaik dengan harga terjangkau
+baseurl: "/profiliate"
+url: "https://bukupedia.github.io"
+
+# Logo configuration
+logo_text: "Profiliate"
+# logo_image: "/assets/images/logo.png"  # Uncomment and set path to use image logo instead
+
+# Footer configuration
+footer_text: "Profit from Affiliate"
+footer_company: "Profiliate"  # Optional company name
+# footer_year: 2025  # Optional - uncomment to use fixed year instead of dynamic current year
+
+permalink: pretty
+
+collections:
+  products:
+    output: true
+  pages:
+    output: true
+    permalink: /:name/
+
+sass:
+  style: compressed
