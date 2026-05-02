@@ -1,0 +1,24 @@
+---
+layout: default
+---
+
+<article class="product-detail">
+  <div class="container">
+    <div class="product-card-large">
+      <div class="product-image-wrapper">
+        <img src="{{ page.image_url }}" alt="{{ page.title }}" class="product-image">
+      </div>
+      <div class="product-info">
+        <h1 class="product-title">{{ page.title }}</h1>
+        <p class="product-price">{{ page.price }}</p>
+        <div class="product-description">
+          {{ content }}
+        </div>
+        <a href="{{ page.affiliate_link }}" target="_blank" rel="noopener noreferrer" class="btn btn-primary">
+          Beli Sekarang
+        </a>
+      </div>
+    </div>
+    <a href="{{ site.baseurl }}/" class="back-link">← Kembali ke Beranda</a>
+  </div>
+</article>
